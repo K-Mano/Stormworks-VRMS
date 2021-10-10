@@ -1,0 +1,98 @@
+﻿<Window x:Class="Stormworks_VRMS.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:Fluent="urn:fluent-ribbon"
+        xmlns:local="clr-namespace:Stormworks_VRMS"
+        mc:Ignorable="d"
+        Title="Stormworks VRMS™ - 準備完了" Height="480" Width="840" Background="WhiteSmoke">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Fluent:Ribbon Grid.Row="0">
+            <Fluent:Ribbon.Menu>
+                <Fluent:ApplicationMenu Header="VRMS">
+                    <Fluent:MenuItem Header="ヘルプ"/>
+                    <Fluent:MenuItem Header="終了"/>
+                </Fluent:ApplicationMenu>
+            </Fluent:Ribbon.Menu>
+            <Fluent:RibbonTabItem Header="機体監視システム">
+                <Fluent:RibbonGroupBox Header="サーバー操作">
+                    <Fluent:Button Header="起動"/>
+                    <Fluent:Button Header="停止" IsEnabled="False"/>
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="サーバー設定">
+                    <Fluent:ToggleButton Header="ログの出力"/>
+                    <Fluent:ToggleButton Header="リスト追加の自動承認" Size="Middle"/>
+                    <Fluent:ToggleButton Header="機体辞書追加の自動承認" Size="Middle"/>
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="コンソールと表示">
+                    <Fluent:Button Header="コンソールの表示"/>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <Fluent:ComboBox Header="グループの表示:" MinWidth="64" DisplayMemberPath="Text" SelectedIndex="0" IsEditable="False">
+                            <TextBlock Text="(既定)"/>
+                        </Fluent:ComboBox>
+                        <Grid Grid.Row="1" Margin="4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Fluent:CheckBox Header="情報" Grid.Column="0" Grid.Row="0"/>
+                            <Fluent:CheckBox Header="警告" Grid.Column="1" Grid.Row="0"/>
+                            <Fluent:CheckBox Header="エラー" Grid.Column="0" Grid.Row="1"/>
+                            <Fluent:CheckBox Header="重大" Grid.Column="1" Grid.Row="1"/>
+                        </Grid>
+                    </Grid>
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
+            <Fluent:RibbonTabItem Header="機体辞書">
+            </Fluent:RibbonTabItem>
+            <Fluent:RibbonTabItem Header="設定">
+                <Fluent:RibbonGroupBox Header="その他">
+                    <Fluent:Button Header="詳細設定"/>
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
+        </Fluent:Ribbon>
+        <Grid Grid.Row="1">
+            
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="320"/>
+            </Grid.ColumnDefinitions>
+            <TreeView Margin="8,8,4,8" Grid.Column="0" BorderBrush="DarkGray">
+                <TreeViewItem Header="テストグループ">
+                    <TreeViewItem Header="テスト機体#1"/>
+                    <TreeViewItem Header="テスト機体#2"/>
+                    <TreeViewItem Header="テスト機体#3"/>
+                </TreeViewItem>
+            </TreeView>
+            <TabControl Grid.Column="2" Margin="4,8,8,8">
+                <TabItem Header="機体情報">
+                    <StackPanel Orientation="Vertical" Margin="8">
+                        <TextBlock Text="機体名: テスト機体#1"/>
+                        <Grid Height="8"/>
+                        <TextBlock Text="UUID: {F7CA3E75-0681-4E1B-9FA1-4BDD9A030FBE}"/>
+                        <TextBlock Text="固有機体ID: 64EB7F8B"/>
+                        <TextBlock Text="ステータス: オンライン"/>
+                    </StackPanel>
+                </TabItem>
+                <TabItem Header="コントロール">
+                    <Grid>
+
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </Grid>
+    </Grid>
+</Window>
