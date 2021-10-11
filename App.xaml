@@ -4,6 +4,12 @@
              xmlns:local="clr-namespace:Stormworks_VRMS"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <ResourceDictionary Source="pack://application:,,,/Fluent;Component/Themes/Generic.xaml" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="StyleDictionary.xaml"/>
+                <ResourceDictionary Source="Designs.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/Fluent;Component/Themes/Generic.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

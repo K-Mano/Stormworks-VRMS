@@ -18,11 +18,10 @@ using Fluent;
 
 namespace Stormworks_VRMS
 {
-    /// <summary>
-    /// MainWindow.xaml の相互作用ロジック
-    /// </summary>
     public partial class MainWindow : Window
     {
+        ConsoleWindow console = new ConsoleWindow();
+
         SWHTTPListener listener;
         HttpClient httpClient;
 
@@ -35,12 +34,22 @@ namespace Stormworks_VRMS
             listener   = new SWHTTPListener(httpClient);
         }
 
+        // MainWindowのウィンドウハンドル取得
+        public IntPtr Handle
+        {
+            get
+            {
+                var helper = new System.Windows.Interop.WindowInteropHelper(this);
+                return helper.Handle;
+            }
+        }
+
         private void ButtonStart_Click(object sender, RoutedEventArgs e)
         {
             ButtonStart.IsEnabled = false;
             ButtonStop.IsEnabled  = true;
 
-            listener.Start("localhost", 25565);
+            listener.Start("localhost", 43000);
         }
 
         private void ButtonStop_Click(object sender, RoutedEventArgs e)
@@ -50,6 +59,16 @@ namespace Stormworks_VRMS
 
             listener.Stop();
 
+        }
+
+        private void ShowConsole_Click(object sender, RoutedEventArgs e)
+        {
+            console.Show();
+        }
+
+        private void WindowBase_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Application.Current.Shutdown();
         }
     }
 }

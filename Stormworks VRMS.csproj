@@ -72,8 +72,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="StateObject.cs" />
+    <Compile Include="ConsoleWindow.xaml.cs">
+      <DependentUpon>ConsoleWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SWHTTPListener.cs" />
+    <Page Include="ConsoleWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designs.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -86,6 +96,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="StyleDictionary.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -110,9 +124,9 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <Resource Include="Asstes\SpicaNeueP-Bold.ttf" />
-    <Resource Include="Asstes\SpicaNeueP-Light.ttf" />
-    <Resource Include="Asstes\SpicaNeueP-Regular.ttf" />
+    <Resource Include="Assets\SpicaNeueP-Bold.ttf" />
+    <Resource Include="Assets\SpicaNeueP-Light.ttf" />
+    <Resource Include="Assets\SpicaNeueP-Regular.ttf" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -120,6 +134,15 @@
   <ItemGroup>
     <SplashScreen Include="SplashScreen.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Assets\icons\play-48.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\icons\console-48.png" />
+    <Resource Include="Assets\icons\stop-48.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\icons\scroll-48.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

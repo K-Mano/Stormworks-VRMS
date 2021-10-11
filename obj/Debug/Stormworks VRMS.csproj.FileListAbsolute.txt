@@ -43,3 +43,7 @@ C:\Users\真野 京介\Documents\GitHub\Stormworks-VRMS\obj\Debug\Stormworks VRM
 C:\Users\真野 京介\Documents\GitHub\Stormworks-VRMS\obj\Debug\Stormworks VRMS.csproj.CoreCompileInputs.cache
 C:\Users\真野 京介\Documents\GitHub\Stormworks-VRMS\obj\Debug\Stormworks VRMS.exe
 C:\Users\真野 京介\Documents\GitHub\Stormworks-VRMS\obj\Debug\Stormworks VRMS.pdb
+C:\Users\mnks3\source\repos\Stormworks VRMS\Stormworks VRMS\obj\Debug\ConsoleWindow.g.cs
+C:\Users\mnks3\source\repos\Stormworks VRMS\Stormworks VRMS\obj\Debug\ConsoleWindow.baml
+C:\Users\mnks3\source\repos\Stormworks VRMS\Stormworks VRMS\obj\Debug\StyleDictionary.baml
+C:\Users\mnks3\source\repos\Stormworks VRMS\Stormworks VRMS\obj\Debug\Designs.baml
