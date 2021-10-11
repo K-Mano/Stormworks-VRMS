@@ -30,14 +30,6 @@ C:\Users\mnks3\source\repos\Stormworks VRMS\Stormworks VRMS\obj\Debug\Stormworks
 C:\Users\真野 京介\Documents\GitHub\Stormworks-VRMS\bin\Debug\Stormworks VRMS.exe.config
 C:\Users\真野 京介\Documents\GitHub\Stormworks-VRMS\bin\Debug\Stormworks VRMS.exe
 C:\Users\真野 京介\Documents\GitHub\Stormworks-VRMS\bin\Debug\Stormworks VRMS.pdb
-C:\Users\真野 京介\Documents\GitHub\Stormworks-VRMS\bin\Debug\ControlzEx.pdb
-C:\Users\真野 京介\Documents\GitHub\Stormworks-VRMS\bin\Debug\ControlzEx.xml
-C:\Users\真野 京介\Documents\GitHub\Stormworks-VRMS\bin\Debug\Fluent.pdb
-C:\Users\真野 京介\Documents\GitHub\Stormworks-VRMS\bin\Debug\Fluent.xml
-C:\Users\真野 京介\Documents\GitHub\Stormworks-VRMS\bin\Debug\Microsoft.WindowsAPICodePack.pdb
-C:\Users\真野 京介\Documents\GitHub\Stormworks-VRMS\bin\Debug\Microsoft.WindowsAPICodePack.xml
-C:\Users\真野 京介\Documents\GitHub\Stormworks-VRMS\bin\Debug\Microsoft.Xaml.Behaviors.pdb
-C:\Users\真野 京介\Documents\GitHub\Stormworks-VRMS\bin\Debug\Microsoft.Xaml.Behaviors.xml
 C:\Users\真野 京介\Documents\GitHub\Stormworks-VRMS\obj\Debug\Stormworks VRMS.csproj.AssemblyReference.cache
 C:\Users\真野 京介\Documents\GitHub\Stormworks-VRMS\obj\Debug\MainWindow.g.cs
 C:\Users\真野 京介\Documents\GitHub\Stormworks-VRMS\obj\Debug\App.g.cs

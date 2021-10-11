@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -21,9 +23,33 @@ namespace Stormworks_VRMS
     /// </summary>
     public partial class MainWindow : Window
     {
+        SWHTTPListener listener;
+        HttpClient httpClient;
+
         public MainWindow()
         {
             InitializeComponent();
+
+            // 通信APIの初期化
+            httpClient = new HttpClient();
+            listener   = new SWHTTPListener(httpClient);
+        }
+
+        private void ButtonStart_Click(object sender, RoutedEventArgs e)
+        {
+            ButtonStart.IsEnabled = false;
+            ButtonStop.IsEnabled  = true;
+
+            listener.Start("localhost", 25565);
+        }
+
+        private void ButtonStop_Click(object sender, RoutedEventArgs e)
+        {
+            ButtonStart.IsEnabled = true;
+            ButtonStop.IsEnabled = false;
+
+            listener.Stop();
+
         }
     }
 }

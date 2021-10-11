@@ -21,15 +21,15 @@
             </Fluent:Ribbon.Menu>
             <Fluent:RibbonTabItem Header="機体監視システム">
                 <Fluent:RibbonGroupBox Header="サーバー操作">
-                    <Fluent:Button Header="起動"/>
-                    <Fluent:Button Header="停止" IsEnabled="False"/>
+                    <Fluent:Button x:Name="ButtonStart" Header="起動" IsEnabled="True" Click="ButtonStart_Click" />
+                    <Fluent:Button x:Name="ButtonStop" Header="停止" IsEnabled="False" Click="ButtonStop_Click"/>
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox Header="サーバー設定">
                     <Fluent:ToggleButton Header="ログの出力"/>
                     <Fluent:ToggleButton Header="リスト追加の自動承認" Size="Middle"/>
                     <Fluent:ToggleButton Header="機体辞書追加の自動承認" Size="Middle"/>
                 </Fluent:RibbonGroupBox>
-                <Fluent:RibbonGroupBox Header="コンソールと表示">
+                <Fluent:RibbonGroupBox Header="コンソールの設定">
                     <Fluent:Button Header="コンソールの表示"/>
                     <Grid>
                         <Grid.RowDefinitions>
@@ -68,7 +68,7 @@
             
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="320"/>
+                <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
             <TreeView Margin="8,8,4,8" Grid.Column="0" BorderBrush="DarkGray">
                 <TreeViewItem Header="テストグループ">
@@ -77,15 +77,37 @@
                     <TreeViewItem Header="テスト機体#3"/>
                 </TreeViewItem>
             </TreeView>
-            <TabControl Grid.Column="2" Margin="4,8,8,8">
+            <TabControl Grid.Column="2" MinWidth="360" Margin="4,8,8,8">
                 <TabItem Header="機体情報">
-                    <StackPanel Orientation="Vertical" Margin="8">
-                        <TextBlock Text="機体名: テスト機体#1"/>
-                        <Grid Height="8"/>
-                        <TextBlock Text="UUID: {F7CA3E75-0681-4E1B-9FA1-4BDD9A030FBE}"/>
-                        <TextBlock Text="固有機体ID: 64EB7F8B"/>
-                        <TextBlock Text="ステータス: オンライン"/>
-                    </StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Orientation="Vertical" Grid.Column="1" Margin="8">
+                            <TextBlock x:Name="TagetName" Text="テスト機体#1" FontSize="18"/>
+                            <Grid Height="8"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="UUID: "/>
+                                <TextBlock Text="機体の固有ID:  " Grid.Row="1"/>
+                                <TextBlock x:Name="TargetUUID" Text="F7CA3E75-0681-4E1B-9FA1-4BDD9A030FBE" Grid.Column="1"/>
+                                <TextBlock x:Name="TargetID" Text="64EB7F8B" Grid.Row="1" Grid.Column="1"/>
+                                <Grid Height="8"/>
+                                <TextBlock Text="ステータス: " Grid.Row="2"/>
+                                <TextBlock x:Name="TargetStatus" Text="オンライン" Grid.Row="2" Grid.Column="1"/>
+                            </Grid>
+
+                        </StackPanel>
+                    </Grid>
                 </TabItem>
                 <TabItem Header="コントロール">
                     <Grid>
