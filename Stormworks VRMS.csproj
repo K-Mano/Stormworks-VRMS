@@ -34,6 +34,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>App.manifest</ApplicationManifest>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="ControlzEx, Version=4.0.0.0, Culture=neutral, PublicKeyToken=69f1c32f803d307e, processorArchitecture=MSIL">
       <HintPath>..\packages\ControlzEx.4.4.0\lib\net462\ControlzEx.dll</HintPath>
@@ -59,6 +62,9 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="TaskDialog">
+      <HintPath>..\..\TaskDialog\TaskDialog\bin\Debug\net472\TaskDialog.dll</HintPath>
     </Reference>
     <Reference Include="UIAutomationProvider" />
     <Reference Include="UIAutomationTypes" />
@@ -120,6 +126,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="App.manifest" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -144,6 +151,15 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\icons\scroll-48.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\icons\close-48.png" />
+    <Resource Include="Assets\icons\forcestop-48.png" />
+    <Resource Include="Assets\icons\group-48.png" />
+    <Resource Include="Assets\icons\help-48.png" />
+    <Resource Include="Assets\icons\info-48.png" />
+    <Resource Include="Assets\icons\locked-48.png" />
+    <Resource Include="Assets\icons\pin-48.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

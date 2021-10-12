@@ -41,17 +41,18 @@ namespace Stormworks_VRMS
         {
             foreach (string line in util.GetConsoleLogList())
             {
-                logall += (line + Environment.NewLine);
+                logall += line + Environment.NewLine;
             }
             console.Text = logall;
         }
 
         private void ConsoleStreamEventCallback(object sender, Util.ConsoleStreamEventArgs e)
         {
-            logall += (e.Log + Environment.NewLine);
+            logall += e.Log + Environment.NewLine;
             Dispatcher.Invoke(() =>
             {
                 console.Text = logall;
+                console.ScrollToEnd();
             });
         }
     }

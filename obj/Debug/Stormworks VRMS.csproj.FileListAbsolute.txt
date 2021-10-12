@@ -51,3 +51,6 @@ C:\Users\真野 京介\Documents\GitHub\Stormworks-VRMS\obj\Debug\Designs.baml
 C:\Users\真野 京介\Documents\GitHub\Stormworks-VRMS\obj\Debug\StyleDictionary.baml
 C:\Users\真野 京介\Documents\GitHub\Stormworks-VRMS\obj\Debug\ConsoleWindow.g.cs
 C:\Users\真野 京介\Documents\GitHub\Stormworks-VRMS\obj\Debug\ConsoleWindow.baml
+C:\Users\mnks3\source\repos\Stormworks VRMS\Stormworks VRMS\bin\Debug\TaskDialog.dll
+C:\Users\mnks3\source\repos\Stormworks VRMS\Stormworks VRMS\bin\Debug\TaskDialog.pdb
+C:\Users\mnks3\source\repos\Stormworks VRMS\Stormworks VRMS\bin\Debug\TaskDialog.xml

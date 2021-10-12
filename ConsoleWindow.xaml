@@ -5,16 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Stormworks_VRMS"
         mc:Ignorable="d"
-        Title="デバッグ コンソール" Height="450" Width="800" Background="Transparent" WindowStyle="ToolWindow" Closing="WindowConsole_Closing">
-    <!--<WindowChrome.WindowChrome>
-        <WindowChrome CaptionHeight="48"
-                      GlassFrameThickness="-1"
-                      ResizeBorderThickness="5"
-                      UseAeroCaptionButtons="True" />
-    </WindowChrome.WindowChrome>-->
+        Title="コンソール ウィンドウ" Height="450" Width="800" Background="Transparent" WindowStyle="ToolWindow" Closing="WindowConsole_Closing" SnapsToDevicePixels="True">
     <Border BorderBrush="#22A9A9A9" BorderThickness="1">
         <Grid Margin="-1">
-            <TextBox x:Name="console" Background="Transparent" Style="{StaticResource ReadOnlyTextBox}" Margin="12" FontFamily="Consolas" FontSize="12" Foreground="White" IsReadOnly="True" IsUndoEnabled="False"/>
+            <TextBox x:Name="console" Background="Transparent" Style="{StaticResource ReadOnlyTextBox}" Margin="12" FontFamily="Consolas" FontSize="12" Foreground="White" IsReadOnly="True" IsUndoEnabled="False" AllowDrop="False" Focusable="False" ScrollViewer.CanContentScroll="True"/>
         </Grid>
     </Border>
 </Window>
