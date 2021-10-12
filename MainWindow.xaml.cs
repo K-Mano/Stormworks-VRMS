@@ -20,18 +20,24 @@ namespace Stormworks_VRMS
 {
     public partial class MainWindow : Window
     {
-        ConsoleWindow console = new ConsoleWindow();
+        private Util util;
+        private ConsoleWindow console;
 
-        SWHTTPListener listener;
-        HttpClient httpClient;
+        private SWHTTPListener listener;
+        private HttpClient httpClient;
 
         public MainWindow()
         {
             InitializeComponent();
 
+            util = new Util();
+            console = new ConsoleWindow(util);
+
             // 通信APIの初期化
             httpClient = new HttpClient();
-            listener   = new SWHTTPListener(httpClient);
+            listener   = new SWHTTPListener(httpClient, util);
+
+            util.ConsoleStreamEvent += ConsoleStreamEventCallback;
         }
 
         // MainWindowのウィンドウハンドル取得
@@ -42,6 +48,11 @@ namespace Stormworks_VRMS
                 var helper = new System.Windows.Interop.WindowInteropHelper(this);
                 return helper.Handle;
             }
+        }
+        private void ConsoleStreamEventCallback(object sender, Util.ConsoleStreamEventArgs e)
+        {
+            //logall += (e.Log + Environment.NewLine);
+            //console.Text = logall;
         }
 
         private void ButtonStart_Click(object sender, RoutedEventArgs e)

@@ -76,6 +76,7 @@
       <DependentUpon>ConsoleWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="SWHTTPListener.cs" />
+    <Compile Include="Util.cs" />
     <Page Include="ConsoleWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

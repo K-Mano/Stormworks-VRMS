@@ -6,7 +6,7 @@
         xmlns:Fluent="urn:fluent-ribbon"
         xmlns:local="clr-namespace:Stormworks_VRMS"
         mc:Ignorable="d"
-        Title="Stormworks VRMS™ - 準備完了" Height="480" Width="840" Background="WhiteSmoke" WindowStartupLocation="CenterScreen" Closing="WindowBase_Closing">
+        Title="Stormworks VRMS™ - 準備完了" Height="560" Width="920" Background="WhiteSmoke" WindowStartupLocation="CenterScreen" Closing="WindowBase_Closing">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -23,6 +23,7 @@
                 <Fluent:RibbonGroupBox Header="サーバー操作">
                     <Fluent:Button x:Name="ButtonStart" Header="起動" LargeIcon="/Assets/icons/play-48.png" IsEnabled="True" Click="ButtonStart_Click" />
                     <Fluent:Button x:Name="ButtonStop" Header="停止" LargeIcon="/Assets/icons/stop-48.png" IsEnabled="False" Click="ButtonStop_Click"/>
+                    <Fluent:Button Header="強制停止"/>
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox Header="サーバー設定">
                     <Fluent:ToggleButton Header="ログの出力" LargeIcon="/Assets/icons/scroll-48.png"/>
@@ -31,14 +32,17 @@
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox Header="コンソールの設定">
                     <Fluent:Button x:Name="ShowConsole" Header="コンソールの表示" LargeIcon="/Assets/icons/console-48.png" Click="ShowConsole_Click"/>
+                    <Fluent:ToggleButton Header="常に手前に表示"/>
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
-                        <Fluent:ComboBox Header="グループの表示:" MinWidth="64" DisplayMemberPath="Text" SelectedIndex="0" IsEditable="False">
-                            <TextBlock Text="(既定)"/>
-                        </Fluent:ComboBox>
+                        <Grid Grid.Row="0" Margin="4">
+                            <Fluent:ComboBox Header="グループの表示:" MinWidth="64" DisplayMemberPath="Text" SelectedIndex="0" IsEditable="False">
+                                <TextBlock Text="(既定)"/>
+                            </Fluent:ComboBox>
+                        </Grid>
                         <Grid Grid.Row="1" Margin="4">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition/>
@@ -57,6 +61,9 @@
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
             <Fluent:RibbonTabItem Header="機体辞書">
+                <Fluent:RibbonGroupBox Header="辞書の操作">
+                    <Fluent:DropDownButton Header="追加"/>
+                </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
             <Fluent:RibbonTabItem Header="設定">
                 <Fluent:RibbonGroupBox Header="その他">
@@ -65,56 +72,109 @@
             </Fluent:RibbonTabItem>
         </Fluent:Ribbon>
         <Grid Grid.Row="1">
-            
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
-            <TreeView Margin="8,8,4,8" Grid.Column="0" BorderBrush="DarkGray">
-                <TreeViewItem Header="テストグループ">
-                    <TreeViewItem Header="テスト機体#1"/>
-                    <TreeViewItem Header="テスト機体#2"/>
-                    <TreeViewItem Header="テスト機体#3"/>
-                </TreeViewItem>
-            </TreeView>
-            <TabControl Grid.Column="2" MinWidth="360" Margin="4,8,8,8">
-                <TabItem Header="機体情報">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <StackPanel Orientation="Vertical" Grid.Column="1" Margin="8">
-                            <TextBlock x:Name="TagetName" Text="テスト機体#1" FontSize="18"/>
-                            <Grid Height="8"/>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
-                                <TextBlock Text="UUID: "/>
-                                <TextBlock Text="機体の固有ID:  " Grid.Row="1"/>
-                                <TextBlock x:Name="TargetUUID" Text="F7CA3E75-0681-4E1B-9FA1-4BDD9A030FBE" Grid.Column="1"/>
-                                <TextBlock x:Name="TargetID" Text="64EB7F8B" Grid.Row="1" Grid.Column="1"/>
-                                <Grid Height="8"/>
-                                <TextBlock Text="ステータス: " Grid.Row="2"/>
-                                <TextBlock x:Name="TargetStatus" Text="オンライン" Grid.Row="2" Grid.Column="1"/>
-                            </Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Border x:Name="ObjectTreeGrid" BorderBrush="DarkGray" BorderThickness="1" Grid.Column="0" Margin="8,8,4,4">
+                <Border.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0,0">
+                        <GradientStop Color="#FFB9D1EA" Offset="0"/>
+                        <GradientStop Color="#FF9AB5D2" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="オブジェクトツリー" Grid.Row="0" Margin="4"/>
+                    <TreeView BorderBrush="DarkGray" Grid.Row="1" Margin="-1">
+                        <TreeViewItem Header="テストグループ">
+                            <TreeViewItem Header="テスト機体#1"/>
+                            <TreeViewItem Header="テスト機体#2"/>
+                            <TreeViewItem Header="テスト機体#3"/>
+                        </TreeViewItem>
+                    </TreeView>
+                </Grid>
+            </Border>
+            <Border x:Name="ConsoleGrid" BorderBrush="DarkGray" BorderThickness="1" Grid.Row="1" Margin="8,4,4,8">
+                <Border.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0,0">
+                        <GradientStop Color="#FFB9D1EA" Offset="0"/>
+                        <GradientStop Color="#FF9AB5D2" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="コンソール" Grid.Row="0" Margin="4"/>
+                    <RichTextBox Grid.Row="1" Margin="-1" Focusable="False" AllowDrop="False" IsTabStop="False" IsReadOnly="True" IsReadOnlyCaretVisible="False"/>
+                </Grid>
+            </Border>
+            <Border x:Name="ControlGrid" BorderBrush="DarkGray" BorderThickness="1" Grid.Column="1" Grid.RowSpan="2" MinWidth="360" Margin="4,8,8,8">
+                <Border.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0,0">
+                        <GradientStop Color="#FFB9D1EA" Offset="0"/>
+                        <GradientStop Color="#FF9AB5D2" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="操作" Grid.Row="0" Margin="4"/>
+                    <Border BorderBrush="DarkGray" BorderThickness="1" Background="White" Grid.Row="1" Margin="-1">
+                        <Grid Margin="8">
+                            <TabControl>
+                                <TabItem Header="機体情報">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Orientation="Vertical" Grid.Column="1" Margin="8">
+                                            <TextBlock x:Name="TagetName" Text="テスト機体#1" FontSize="18"/>
+                                            <Grid Height="8"/>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition/>
+                                                    <ColumnDefinition/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition/>
+                                                    <RowDefinition/>
+                                                    <RowDefinition/>
+                                                </Grid.RowDefinitions>
+                                                <TextBlock Text="UUID: "/>
+                                                <TextBlock Text="機体の固有ID:  " Grid.Row="1"/>
+                                                <TextBlock x:Name="TargetUUID" Text="F7CA3E75-0681-4E1B-9FA1-4BDD9A030FBE" Grid.Column="1"/>
+                                                <TextBlock x:Name="TargetID" Text="64EB7F8B" Grid.Row="1" Grid.Column="1"/>
+                                                <Grid Height="8"/>
+                                                <TextBlock Text="ステータス: " Grid.Row="2"/>
+                                                <TextBlock x:Name="TargetStatus" Text="オンライン" Grid.Row="2" Grid.Column="1"/>
+                                            </Grid>
 
-                        </StackPanel>
-                    </Grid>
-                </TabItem>
-                <TabItem Header="コントロール">
-                    <Grid>
+                                        </StackPanel>
+                                    </Grid>
+                                </TabItem>
+                                <TabItem Header="コントロール">
+                                    <Grid>
 
-                    </Grid>
-                </TabItem>
-            </TabControl>
+                                    </Grid>
+                                </TabItem>
+                            </TabControl>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Border>
         </Grid>
     </Grid>
 </Window>

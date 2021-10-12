@@ -18,15 +18,41 @@ namespace Stormworks_VRMS
 {
     public partial class ConsoleWindow : Window
     {
-        public ConsoleWindow()
+        private Util util;
+        private string logall = "";
+        delegate void DelegateProcess();
+
+        public ConsoleWindow(Util util)
         {
             InitializeComponent();
+            this.util = util;
+
+            util.ConsoleStreamEvent += ConsoleStreamEventCallback;
+            Init();
         }
 
         private void WindowConsole_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            e.Cancel=true;
-            this.Hide();
+            e.Cancel = true;
+            Hide();
+        }
+
+        private void Init()
+        {
+            foreach (string line in util.GetConsoleLogList())
+            {
+                logall += (line + Environment.NewLine);
+            }
+            console.Text = logall;
+        }
+
+        private void ConsoleStreamEventCallback(object sender, Util.ConsoleStreamEventArgs e)
+        {
+            logall += (e.Log + Environment.NewLine);
+            Dispatcher.Invoke(() =>
+            {
+                console.Text = logall;
+            });
         }
     }
 }

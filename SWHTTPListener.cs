@@ -22,10 +22,10 @@ namespace Stormworks_VRMS
         private string ADDRESS;
         private int PORT;
 
-        public SWHTTPListener(HttpClient httpClient)
+        public SWHTTPListener(HttpClient httpClient, Util util)
         {
             this.httpClient = httpClient;
-            util = new Util();
+            this.util = util;
         }
         public bool isServerRunning()
         {
@@ -128,23 +128,6 @@ namespace Stormworks_VRMS
             catch (Exception e)
             {
                 util.ConsoleWriteDetails(e.Message, Util.ConsoleEventLevel.ERROR);
-            }
-        }
-
-        class Util
-        {
-            public enum ConsoleEventLevel
-            {
-                INFO = 0,
-                WARN = 1,
-                ERROR = 2,
-                CRITICAL = 3,
-                DATA = 4
-            }
-            public void ConsoleWriteDetails(string text, ConsoleEventLevel type)
-            {
-                string time = DateTime.Now.ToString();
-                Console.WriteLine(string.Format("[{0}][{1}]: {2}", time, type, text));
             }
         }
     }

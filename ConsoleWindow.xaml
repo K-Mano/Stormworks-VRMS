@@ -14,7 +14,7 @@
     </WindowChrome.WindowChrome>-->
     <Border BorderBrush="#22A9A9A9" BorderThickness="1">
         <Grid Margin="-1">
-            <RichTextBox Background="Transparent" Style="{StaticResource ReadOnlyRichTextBox}" Margin="12" FontFamily="Consolas" FontSize="16" Foreground="White" IsReadOnly="True" IsUndoEnabled="False"/>
+            <TextBox x:Name="console" Background="Transparent" Style="{StaticResource ReadOnlyTextBox}" Margin="12" FontFamily="Consolas" FontSize="12" Foreground="White" IsReadOnly="True" IsUndoEnabled="False"/>
         </Grid>
     </Border>
 </Window>
