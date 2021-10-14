@@ -6,7 +6,7 @@
         xmlns:Fluent="urn:fluent-ribbon"
         xmlns:local="clr-namespace:Stormworks_VRMS"
         mc:Ignorable="d"
-        Title="Stormworks VRMS™ - 準備完了" Height="560" Width="920" Background="WhiteSmoke" WindowStartupLocation="CenterScreen" Closing="WindowBase_Closing">
+        Title="Stormworks VRMS™" Height="560" Width="920" Background="WhiteSmoke" WindowStartupLocation="CenterScreen" Closing="WindowBase_Closing">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -23,7 +23,7 @@
                 <Fluent:RibbonGroupBox Header="サーバー コントロール">
                     <Fluent:Button x:Name="ButtonStart" Header="起動(_A)" LargeIcon="/Assets/icons/play-48.png" IsEnabled="True" Click="ButtonStart_Click" />
                     <Fluent:Button x:Name="ButtonStop" Header="停止(_S)" LargeIcon="/Assets/icons/stop-48.png" IsEnabled="False" Click="ButtonStop_Click"/>
-                    <Fluent:Button Header="強制停止(_X)" LargeIcon="/Assets/icons/forcestop-48.png"/>
+                    <Fluent:Button x:Name="ButtonForceStop" Header="強制停止(_X)" LargeIcon="/Assets/icons/forcestop-48.png"/>
                 </Fluent:RibbonGroupBox>
                 <Fluent:RibbonGroupBox Header="オートメーション">
                     <Fluent:ToggleButton Header="リスト追加の自動承認" Size="Middle" IsEnabled="False"/>
@@ -71,6 +71,7 @@
             <Fluent:RibbonTabItem Header="設定">
                 <Fluent:RibbonGroupBox Header="その他">
                     <Fluent:Button Header="詳細設定"/>
+                    <Fluent:Button Header="バージョン情報"/>
                 </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
         </Fluent:Ribbon>
@@ -96,15 +97,36 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <TextBlock Text="オブジェクトツリー" Grid.Row="0" Margin="4"/>
-                    <ListView x:Name="VehicleListView" BorderBrush="DarkGray" BorderThickness="1" Grid.Row="1" Margin="-1">
+                    <ListView x:Name="VehicleListView" BorderBrush="DarkGray" BorderThickness="1" Grid.Row="1" Margin="-1" SelectionChanged="VehicleListView_SelectionChanged">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            </Style>
+                        </ListView.ItemContainerStyle>
                         <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Margin="4">
-                                    <TextBlock Text="{Binding Id}"/>
-                                    <TextBlock Text="{Binding Name}" FontSize="16" FontWeight="Bold"/>
-                                    <TextBlock Text="{Binding UUID}" Foreground="DimGray"/>
-                                </StackPanel>
-                            </DataTemplate>
+                            <ItemContainerTemplate>
+                                <Grid>
+                                    <StackPanel Width="{Binding Width, ElementName=VehicleListView}" Margin="4">
+                                        <StackPanel.ToolTip>
+                                            <TextBlock Text="{Binding Name}"/>
+                                        </StackPanel.ToolTip>
+                                        <StackPanel.ContextMenu>
+                                            <ContextMenu>
+                                                <MenuItem Header="機体辞書に追加(_A)" IsEnabled="False"/>
+                                                <MenuItem Header="アクセスを許可する(_G)">
+                                                    <MenuItem Header="リストへのアクセス" IsCheckable="True" IsChecked="True" IsEnabled="False"/>
+                                                </MenuItem>
+                                                <Separator/>
+                                                <MenuItem Header="名前の変更(_M)" IsEnabled="False"/>
+                                                <MenuItem x:Name="MenuItemDelete" Header="削除(_D)" Click="MenuItemDelete_Click"/>
+                                            </ContextMenu>
+                                        </StackPanel.ContextMenu>
+                                        <TextBlock Text="{Binding Id}"/>
+                                        <TextBlock Text="{Binding Name}" FontSize="16" FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding UUID}" Foreground="DimGray"/>
+                                    </StackPanel>
+                                </Grid>
+                            </ItemContainerTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
                 </Grid>
@@ -150,7 +172,7 @@
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
                                         <StackPanel Orientation="Vertical" Grid.Column="1" Margin="8">
-                                            <TextBlock x:Name="TagetName" Text="テスト機体#1" FontSize="18"/>
+                                            <TextBlock x:Name="TargetName" Text="-" FontSize="18"/>
                                             <Grid Height="8"/>
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
@@ -164,11 +186,11 @@
                                                 </Grid.RowDefinitions>
                                                 <TextBlock Text="UUID: "/>
                                                 <TextBlock Text="機体の固有ID:  " Grid.Row="1"/>
-                                                <TextBlock x:Name="TargetUUID" Text="F7CA3E75-0681-4E1B-9FA1-4BDD9A030FBE" Grid.Column="1"/>
-                                                <TextBlock x:Name="TargetID" Text="64EB7F8B" Grid.Row="1" Grid.Column="1"/>
+                                                <TextBlock x:Name="TargetUUID" Text="-" Grid.Column="1"/>
+                                                <TextBlock x:Name="TargetID" Text="-" Grid.Row="1" Grid.Column="1"/>
                                                 <Grid Height="8"/>
                                                 <TextBlock Text="ステータス: " Grid.Row="2"/>
-                                                <TextBlock x:Name="TargetStatus" Text="オンライン" Grid.Row="2" Grid.Column="1"/>
+                                                <TextBlock x:Name="TargetStatus" Text="不明" Grid.Row="2" Grid.Column="1"/>
                                             </Grid>
 
                                         </StackPanel>

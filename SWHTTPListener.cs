@@ -20,18 +20,26 @@ namespace Stormworks_VRMS
         public event EventHandler<RequestReceivedEventArgs> RequestReceivedEvent;
         public delegate void RequestReceivedEventHandler(RequestReceivedEventArgs e);
 
+        // ユーティリティのインスタンス作成
         private HttpUtility httpUtil;
         private HttpClient httpClient;
         private Util util;
 
+        // スレッドのキャンセルトークン作成
         CancellationTokenSource tokenSource = null;
         CancellationToken cancellation;
 
+        // IPアドレス オブジェクト
         private string ADDRESS;
         private int PORT;
 
         public class RequestReceivedEventArgs : EventArgs
         {
+            /// <summary>
+            /// イベント引数(HTTPリクエスト)
+            /// </summary>
+            /// <param name="request"></param>
+
             public RequestReceivedEventArgs(HttpListenerRequest request)
             {
                 Request = request;
@@ -42,8 +50,11 @@ namespace Stormworks_VRMS
 
         public SWHTTPListener(HttpClient httpClient, Util util)
         {
+            // HTTPクライアントの取得
             this.httpClient = httpClient;
             this.util = util;
+
+            // リクエストの処理に使用するHTTPUtilityの作成
             httpUtil = new HttpUtility();
         }
 
@@ -55,6 +66,7 @@ namespace Stormworks_VRMS
             }
             return true;
         }
+
         public void Stop()
         {
             util.ConsoleWriteDetails("The listener will be shutdown.", Util.ConsoleEventLevel.INFO);
@@ -71,8 +83,9 @@ namespace Stormworks_VRMS
         {
             util.ConsoleWriteDetails(string.Format("Initializing Listener Process [Thread ID: {0}]", Thread.CurrentThread.ManagedThreadId), Util.ConsoleEventLevel.INFO);
 
+            // サーバーで使用するアドレスの登録
             ADDRESS = address;
-            PORT = port;
+            PORT    = port;
 
             try
             {
@@ -91,8 +104,10 @@ namespace Stormworks_VRMS
                 tokenSource = new CancellationTokenSource();
                 cancellation = tokenSource.Token;
 
+                // サーバー処理開始
                 await Task.Run(() =>
                 {
+                    // キャンセルリクエストのチェック
                     while (!cancellation.IsCancellationRequested)
                     {
                         try
@@ -104,15 +119,17 @@ namespace Stormworks_VRMS
                             if (cancellation.IsCancellationRequested)
                             {
                                 HttpListenerResponse _response = context.Response;
-                                _response.StatusCode = 404;
+                                _response.StatusCode = 200;
                                 _response.Close();
 
                                 break;
                             }
 
+                            // コンテキストからリクエストの取得
                             HttpListenerRequest request = context.Request;
                             util.ConsoleWriteDetails(string.Format("Request received ({0}) [Thread ID: {1}]", request.Url, Thread.CurrentThread.ManagedThreadId), Util.ConsoleEventLevel.INFO);
 
+                            // リクエストからレスポンスの作成
                             Task.Run(() => {
                                 util.ConsoleWriteDetails(string.Format("Query analysis started ({0}) [Thread ID: {1}]", request.RawUrl, Thread.CurrentThread.ManagedThreadId), Util.ConsoleEventLevel.INFO);
 
@@ -122,38 +139,31 @@ namespace Stormworks_VRMS
                                 if (request != null)
                                 {
                                     NameValueCollection query = request.QueryString;
-                                    if (query["request"] != null)
+
+                                    switch (query["request"])
                                     {
-                                        switch (query["request"])
-                                        {
-                                            case "add":
-                                                // レスポンス送信
-                                                util.ConsoleWriteDetails(string.Format("Request accepted 202 ({0})", request.RawUrl), Util.ConsoleEventLevel.INFO);
-                                                response.StatusCode = 202;
+                                        case "add":
+                                            // レスポンス送信
+                                            util.ConsoleWriteDetails(string.Format("Request accepted 202 ({0})", request.RawUrl), Util.ConsoleEventLevel.INFO);
+                                            response.StatusCode = 202;
 
-                                                // リクエストイベント発生
-                                                RequestReceivedEvent(this, new RequestReceivedEventArgs(request));
-                                                break;
+                                            // リクエストイベント発生
+                                            RequestReceivedEvent(this, new RequestReceivedEventArgs(request));
+                                            break;
 
-                                            case "list":
-                                                // レスポンス送信
-                                                util.ConsoleWriteDetails(string.Format("Request success 200 ({0})", request.RawUrl), Util.ConsoleEventLevel.INFO);
-                                                byte[] text = Encoding.UTF8.GetBytes(string.Format("<html><head><meta charset='utf-8'/></head><body>Request Accepted {0}</body></html>", DateTime.Now.ToString()));
-                                                response.OutputStream.Write(text, 0, text.Length);
-                                                response.StatusCode = 200;
-                                                break;
+                                        case "list":
+                                            // レスポンス送信
+                                            util.ConsoleWriteDetails(string.Format("Request success 200 ({0})", request.RawUrl), Util.ConsoleEventLevel.INFO);
+                                            byte[] text = Encoding.UTF8.GetBytes(string.Format("<html><head><meta charset='utf-8'/></head><body>Request Accepted {0}</body></html>", DateTime.Now.ToString()));
+                                            response.OutputStream.Write(text, 0, text.Length);
+                                            response.StatusCode = 200;
+                                            break;
 
-                                            default:
-                                                // レスポンス送信
-                                                util.ConsoleWriteDetails(string.Format("Bad request 400 ({0})", request.RawUrl), Util.ConsoleEventLevel.ERROR);
-                                                response.StatusCode = 400;
-                                                break;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        util.ConsoleWriteDetails(string.Format("Bad request 400 ({0})", request.RawUrl), Util.ConsoleEventLevel.ERROR);
-                                        response.StatusCode = 400;
+                                        default:
+                                            // レスポンス送信
+                                            util.ConsoleWriteDetails(string.Format("Bad request 400 ({0})", request.RawUrl), Util.ConsoleEventLevel.ERROR);
+                                            response.StatusCode = 400;
+                                            break;
                                     }
                                 }
                                 else
@@ -167,6 +177,7 @@ namespace Stormworks_VRMS
                         }
                         catch (Exception e)
                         {
+                            // エラーメッセージの出力
                             util.ConsoleWriteDetails(e.Message, Util.ConsoleEventLevel.ERROR);
                         }
                     }
@@ -177,6 +188,7 @@ namespace Stormworks_VRMS
             }
             catch (Exception e)
             {
+                // エラーメッセージの出力
                 util.ConsoleWriteDetails(e.Message, Util.ConsoleEventLevel.ERROR);
             }
         }

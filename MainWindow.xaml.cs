@@ -24,9 +24,9 @@ namespace Stormworks_VRMS
 {
     public partial class MainWindow : Window
     {
+        // クラスのインスタンス作成
         private Util util;
         private ConsoleWindow console;
-
         private SWHTTPListener listener;
         private HttpClient httpClient;
 
@@ -35,8 +35,19 @@ namespace Stormworks_VRMS
 
         public struct VehicleListItem
         {
+            /// <summary>
+            /// 固有ID
+            /// </summary>
             public string Id { get; set; }
+
+            /// <summary>
+            /// 機体名称
+            /// </summary>
             public string Name { get; set; }
+
+            /// <summary>
+            /// 機体共通のUUID
+            /// </summary>
             public string UUID { get; set; }
         };
         public MainWindow()
@@ -50,16 +61,24 @@ namespace Stormworks_VRMS
             httpClient = new HttpClient();
             listener   = new SWHTTPListener(httpClient, util);
 
+            // 車両リストの初期化
             vehicle = new List<VehicleListItem>();
             VehicleListView.ItemsSource = vehicle;
 
+            // イベントハンドラの登録
             util.ConsoleStreamEvent += ConsoleStreamEventCallback;
             listener.RequestReceivedEvent += RequestReceivedEventCallback;
+
+            // ステータスをウィンドウタイトルに設定
+            SetTitle(string.Format("準備完了"));
         }
 
         private void RequestReceivedEventCallback(object sender, SWHTTPListener.RequestReceivedEventArgs e)
         {
+            // クエリを取得
             NameValueCollection query = e.Request.QueryString;
+
+            // nameキーとuuidキーの存在を確認
             if (query["uuid"] != null && query["name"] != null)
             {
                 util.ConsoleWriteDetails(string.Format("Waiting Request User Prompt [Thread ID: {0}]", Thread.CurrentThread.ManagedThreadId), Util.ConsoleEventLevel.INFO);
@@ -89,6 +108,7 @@ namespace Stormworks_VRMS
                         util.ConsoleWriteDetails(string.Format("Access denied by User [Thread ID: {0}]", Thread.CurrentThread.ManagedThreadId), Util.ConsoleEventLevel.INFO);
                         dialog.Close();
                     };
+
                     deny.Default = true;
                     dialog.Controls.Add(deny);
 
@@ -97,6 +117,7 @@ namespace Stormworks_VRMS
                     accept.Click += (s2, e2) => {
                         util.ConsoleWriteDetails(string.Format("Access accepted by User [Thread ID: {0}]", Thread.CurrentThread.ManagedThreadId), Util.ConsoleEventLevel.INFO);
                         vehicle.Add(new VehicleListItem { Id = query["id"], Name = query["name"], UUID = query["uuid"] });
+                        // リストビューを更新
                         VehicleListView.Items.Refresh();
                         dialog.Close();
                     };
@@ -107,7 +128,9 @@ namespace Stormworks_VRMS
             }
         }
 
-        // MainWindowのウィンドウハンドル取得
+        /// <summary>
+        /// MainWindowのウィンドウハンドル
+        /// </summary>
         public IntPtr Handle
         {
             get
@@ -116,35 +139,48 @@ namespace Stormworks_VRMS
                 return helper.Handle;
             }
         }
+
         private void ConsoleStreamEventCallback(object sender, Util.ConsoleStreamEventArgs e)
         {
             logall += e.Log + Environment.NewLine;
             Dispatcher.Invoke(() =>
             {
+                // ログを更新, 最後尾までスクロール
                 ConsoleTextBox.Text = logall;
                 ConsoleTextBox.ScrollToEnd();
             });
         }
 
+        private void SetTitle(string title)
+        {
+            // ウィンドウタイトルのフォーマット
+            Title = string.Format("Stormworks VRMS™ Beta - {0}", title);
+        }
+
         private void ButtonStart_Click(object sender, RoutedEventArgs e)
         {
+            // ボタン表示の切り替え
             ButtonStart.IsEnabled = false;
             ButtonStop.IsEnabled  = true;
 
+            // アドレス情報を登録
             string ip = "localhost";
             int port = 43000;
 
-            Title = string.Format("Stormworks VRMS™ - 稼働中({0}:{1})", ip, port);
+            // ウィンドウタイトルにステータスを設定
+            SetTitle(string.Format("稼働中({0}:{1})", ip, port));
 
             listener.Start(ip, port);
         }
 
         private void ButtonStop_Click(object sender, RoutedEventArgs e)
         {
+            // ボタン表示の切り替え
             ButtonStart.IsEnabled = true;
             ButtonStop.IsEnabled = false;
 
-            Title = "Stormworks VRMS™ - 準備完了";
+            // ウィンドウタイトルにステータスを設定
+            SetTitle("準備完了");
 
             listener.Stop();
 
@@ -152,22 +188,60 @@ namespace Stormworks_VRMS
 
         private void ShowConsole_Click(object sender, RoutedEventArgs e)
         {
+            // コンソールウィンドウの表示
             console.Show();
         }
 
         private void WindowBase_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            // アプリケーションの終了
             Application.Current.Shutdown();
         }
 
         private void ConsoleTopmost_Unchecked(object sender, RoutedEventArgs e)
         {
+            // 通常の優先度モード
             console.Topmost = false;
         }
 
         private void ConsoleTopmost_Checked(object sender, RoutedEventArgs e)
         {
+            // 最前面に表示
             console.Topmost = true;
+        }
+
+        private void VehicleListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                // 選択オブジェクトの情報をUIに登録
+                TargetName.Text = vehicle[VehicleListView.SelectedIndex].Name;
+                TargetUUID.Text = vehicle[VehicleListView.SelectedIndex].UUID;
+                TargetID.Text   = vehicle[VehicleListView.SelectedIndex].Id;
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                // 表示をリセット
+                TargetName.Text = "-";
+                TargetUUID.Text = "-";
+                TargetID.Text   = "-";
+            }
+        }
+
+        private void MenuItemDelete_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // 選択オブジェクトをリストから削除
+                vehicle.RemoveAt(VehicleListView.SelectedIndex);
+                // リストビューを更新
+                VehicleListView.Items.Refresh();
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                // リストビューを更新
+                VehicleListView.Items.Refresh();
+            }
         }
     }
 }
