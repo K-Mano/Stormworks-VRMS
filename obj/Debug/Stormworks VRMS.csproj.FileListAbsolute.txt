@@ -54,3 +54,5 @@ C:\Users\真野 京介\Documents\GitHub\Stormworks-VRMS\obj\Debug\ConsoleWindow.
 C:\Users\mnks3\source\repos\Stormworks VRMS\Stormworks VRMS\bin\Debug\TaskDialog.dll
 C:\Users\mnks3\source\repos\Stormworks VRMS\Stormworks VRMS\bin\Debug\TaskDialog.pdb
 C:\Users\mnks3\source\repos\Stormworks VRMS\Stormworks VRMS\bin\Debug\TaskDialog.xml
+C:\Users\真野 京介\Documents\GitHub\Stormworks-VRMS\obj\Debug\Stormworks VRMS.csproj.SuggestedBindingRedirects.cache
+C:\Users\真野 京介\Documents\GitHub\Stormworks-VRMS\obj\Debug\Stormworks VRMS.csproj.CopyComplete

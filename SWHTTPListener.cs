@@ -58,7 +58,7 @@ namespace Stormworks_VRMS
             httpUtil = new HttpUtility();
         }
 
-        public bool isServerRunning()
+        public bool IsServerRunning()
         {
             if (tokenSource == null)
             {

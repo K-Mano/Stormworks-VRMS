@@ -26,6 +26,7 @@ namespace Stormworks_VRMS
 
             public string Log { get; set; }
         }
+
         private List<string> con_stream = new List<string>();
 
         /// <summary>

@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "ba39dd1f-5139-4ee0-821c-dd4664ec3a9f": {
+      "ProjectGuid": "ba39dd1f-5139-4ee0-821c-dd4664ec3a9f",
+      "DisplayName": "Stormworks VRMS",
+      "ColorIndex": 0
+    }
+  },
+  "NextColorIndex": 1
+}
