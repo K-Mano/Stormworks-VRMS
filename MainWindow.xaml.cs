@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -17,6 +18,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using Fluent;
 using Microsoft.WindowsAPICodePack.Dialogs;
 
@@ -32,6 +34,8 @@ namespace Stormworks_VRMS
 
         private string logall = "";
         private List<VehicleListItem> vehicle;
+
+        private DispatcherTimer timer;
 
         public struct VehicleListItem
         {
@@ -69,6 +73,10 @@ namespace Stormworks_VRMS
             util.ConsoleStreamEvent += ConsoleStreamEventCallback;
             listener.RequestReceivedEvent += RequestReceivedEventCallback;
 
+            // タイマーの設定
+            timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(1.0);
+
             // ステータスをウィンドウタイトルに設定
             SetTitle(string.Format("準備完了"));
         }
@@ -84,6 +92,9 @@ namespace Stormworks_VRMS
                 util.ConsoleWriteDetails(string.Format("Waiting Request User Prompt [Thread ID: {0}]", Thread.CurrentThread.ManagedThreadId), Util.ConsoleEventLevel.INFO);
                 Dispatcher.Invoke(() =>
                 {
+                    // タイマを開始
+                    timer.Start();
+
                     TaskDialog dialog = new TaskDialog();
 
                     dialog.OwnerWindowHandle = Handle;
@@ -102,6 +113,11 @@ namespace Stormworks_VRMS
 
                     dialog.DetailsExpanded = true;
 
+                    var remain = new TaskDialogProgressBar();
+                    remain.Value   = 0;
+                    remain.Maximum = 5;
+
+                    dialog.Controls.Add(remain);
 
                     var deny = new TaskDialogCommandLink("deny", "キャンセル", "このリクエストの発行元が不明であり、リストへの追加を拒否します。");
                     deny.Click += (s1, e1) => {
@@ -122,6 +138,22 @@ namespace Stormworks_VRMS
                         dialog.Close();
                     };
                     dialog.Controls.Add(accept);
+
+                    dialog.Closing += (senderc, ec) => {
+                        timer.Stop();
+                    };
+
+                    timer.Tick += (senders, es) =>
+                    {
+                        if (remain.Value < 5)
+                        {
+                            Dispatcher.Invoke(() =>
+                            {
+                                remain.Value += 1;
+                            });
+                        }
+                        else dialog.Close();
+                    };
 
                     dialog.Show();
                 });
