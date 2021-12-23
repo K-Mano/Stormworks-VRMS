@@ -37,6 +37,8 @@ namespace Stormworks_VRMS
 
         private DispatcherTimer timer;
 
+        private TaskDialog dialog;
+
         public struct VehicleListItem
         {
             /// <summary>
@@ -73,10 +75,6 @@ namespace Stormworks_VRMS
             util.ConsoleStreamEvent += ConsoleStreamEventCallback;
             listener.RequestReceivedEvent += RequestReceivedEventCallback;
 
-            // タイマーの設定
-            timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(1.0);
-
             // ステータスをウィンドウタイトルに設定
             SetTitle(string.Format("準備完了"));
         }
@@ -92,10 +90,14 @@ namespace Stormworks_VRMS
                 util.ConsoleWriteDetails(string.Format("Waiting Request User Prompt [Thread ID: {0}]", Thread.CurrentThread.ManagedThreadId), Util.ConsoleEventLevel.INFO);
                 Dispatcher.Invoke(() =>
                 {
+                    // タイマーの設定
+                    timer = new DispatcherTimer();
+                    timer.Interval = TimeSpan.FromSeconds(1.0);
+
                     // タイマを開始
                     timer.Start();
 
-                    TaskDialog dialog = new TaskDialog();
+                    dialog = new TaskDialog();
 
                     dialog.OwnerWindowHandle = Handle;
                     dialog.Caption = "Stormworks VRMS™ アクセス要求";
@@ -147,16 +149,17 @@ namespace Stormworks_VRMS
                     {
                         if (remain.Value < 5)
                         {
-                            Dispatcher.Invoke(() =>
-                            {
-                                remain.Value += 1;
-                            });
+                            remain.Value += 1;
                         }
-                        else dialog.Close();
+                        else 
+                        {
+                            dialog.Close();
+                        };
                     };
 
                     dialog.Show();
                 });
+                dialog.Dispose();
             }
         }
 

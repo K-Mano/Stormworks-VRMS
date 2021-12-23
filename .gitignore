@@ -17,6 +17,12 @@ bld/
 [Bb]in/
 [Oo]bj/
 
+*.exe
+*.dll
+*.pdb
+*.config
+*.cache
+
 # Roslyn cache directories
 *.ide/
 
